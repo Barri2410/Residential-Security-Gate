@@ -1,0 +1,32 @@
+import Jetson.GPIO as GPIO
+import time
+
+# Set up GPIO using Jetson.GPIO library
+GPIO.setmode(GPIO.BOARD)
+
+# Set the pin number for the servo signal wire
+servo_pin = 12
+
+# Set up the servo pin as an output
+GPIO.setup(servo_pin, GPIO.OUT)
+
+# Create a PWM instance for the servo pin
+servo = GPIO.PWM(servo_pin, 50)
+
+# Start the PWM with a duty cycle of 7.5% (neutral position)
+servo.start(7.5)
+
+try:
+    while True:
+        # Change the duty cycle to 2.5% (0 degrees)
+        servo.ChangeDutyCycle(2.5)
+        time.sleep(1)
+
+        # Change the duty cycle to 12.5% (180 degrees)
+        servo.ChangeDutyCycle(12.5)
+        time.sleep(1)
+
+except KeyboardInterrupt:
+    # Clean up GPIO before exiting
+    servo.stop()
+    GPIO.cleanup()
